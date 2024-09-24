@@ -1,0 +1,234 @@
+package com.codegnan.university.management;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class UniversityManagement {
+	 
+	private List<Student> students; //list to hold
+	private List<Professor> professors; //list to hold
+	private List<Course> courses; //list to hold
+	
+	//constructor initializes empty list for students, professors, courses.
+	
+	public UniversityManagement() {
+		students = new ArrayList<>();
+		professors = new ArrayList<>();
+		courses = new ArrayList<>();
+	}	
+	
+	//method to add a student.
+	public void addStudent(String name) {
+		students.add(new Student(name));
+	}
+	
+	//method to add professor.
+	public void addProfessor(String name) {
+		professors.add(new Professor(name));
+	}
+	
+	//method to add course.
+	public void addCourse(String title) {
+		courses.add(new Course(title));
+	}
+	
+	//method to enroll a student in a course
+	public void enrollStudentInCourse(String studentName, String courseTitle) {
+		Student student = findStudentByName(studentName); //find the student by name
+		Course course =findCourseByTitle(courseTitle); //find course by title
+		if(student!=null && course!= null) {
+			student.enrolledInCourse(course); //enroll student in the course
+		}else{
+			System.out.println("student or course not found"); //error message if not found
+		}
+	}
+
+		//method to assign course to the professor.
+	public void assignCourseToProfessor(String professorName, String courseTitle) {
+		Professor professor=findProfessorByName(professorName); // find the professor by name
+		Course course =findCourseByTitle(courseTitle); //find course by title
+		if(professor !=null && course!= null) {
+			professor.assignCourse(course); //assign course to professor
+		}else{
+			System.out.println("Professor or course not found"); //error message if not found
+		}
+	}
+	
+	//method
+	public void listStudents(){
+		System.out.println("list of Students in university:");
+		for(Student student:students){
+			System.out.println(student);//enhanced for loop specially designed for list and array
+		}
+	}
+	
+	//method to list all professors.
+	public void listProfessors() {
+		System.out.println("Professors in University:");
+		for(Professor professor:professors) {
+			System.out.println(professor); // prints each professor's name
+		}
+	}
+	
+	//method to list all courses
+	public void listCourses() {
+		System.out.println("courses in University: ");
+		for(Course course: courses) {
+			System.out.println(course); //print each course's
+		}
+	}
+	
+	//method to display the courses a student enrolledIn
+	public void displayStudentCourses(String studentName) {
+		Student student = findStudentByName(studentName); //find the student by name
+		if(student!= null) {
+			System.out.println("Courses for student: "+studentName+ ":");
+			for(Course course:student.getEnrolledCourses()) {
+				System.out.println(course); //print each enrolled course
+			}
+		}else {
+				System.out.println("Student not found"); //error message if not found
+		}
+	}
+	
+	
+	//method
+	public void displayProfessorCourses(String professorName) {
+		Professor professor=findProfessorByName(professorName); // find the professor by name
+		if(professor!= null) {
+			System.out.println("courses assigned to professor "+professorName+":");
+			for(Course course:professor.getassignedCourses()) {
+			System.out.println(course); //print each enrolled course
+			}
+		}else {
+			System.out.println("professor not found"); //error message if not found
+		}
+	}
+	
+	//Helper method to find a student by name
+	private Student findStudentByName(String name) {
+		for(Student student:students) {
+			if(student.getName().equals(name)) {
+				return student;
+			}
+		}
+		return null;
+	}
+	
+	//Helper method to find a professor by name
+	private Professor findProfessorByName(String name) {
+		for(Professor professor:professors) {
+			if(professor.getName().equals(name)) {
+				return professor;
+			}
+		}
+		return null;
+	}
+	
+	//Helper method to find a course by title
+	private Course findCourseByTitle(String title) {
+		for(Course course:courses) {
+			if(course.getTitle().equals(title)) {
+				return course;
+			}
+		}
+		return null;//return null 
+	}
+	
+	
+	public static void main(String[] args) {
+		UniversityManagement management = new UniversityManagement();
+		
+		Scanner sc= new Scanner(System.in);
+		
+		boolean running = true; // flag to control while loop
+		
+		while(running) {
+			System.out.println("\n University Management System");
+			System.out.println("1. Add Student");
+			System.out.println("2. Add Professor");
+			System.out.println("3. Add Course");
+			System.out.println("4. Enroll Student in Course");
+			System.out.println("5. Assign course to professor");
+			System.out.println("6. List Students");
+			System.out.println("7. List Professors");
+			System.out.println("8. List Courses");
+			System.out.println("9. Display StudentCourses");
+			System.out.println("10. Display Professor courses");
+			System.out.println("Exit");
+			
+			System.out.println("Choose an option:");
+			int choice = sc.nextInt();
+			sc.nextLine(); //consume new line character
+			switch(choice) {
+			case 1: 
+				System.out.print("Enter Student name: ");
+				String studentName = sc.nextLine();
+				management.addStudent(studentName); // add the student
+				break;
+				
+			case 2:
+				System.out.print("Enter Professor name:");
+				String professorName = sc.nextLine();
+				management.addProfessor(professorName); // add the professor
+				break;
+				
+			case 3:
+				System.out.print("Enter course name:");
+				String courseTitle = sc.nextLine();
+				management.addCourse(courseTitle); // add the course
+				break;
+				
+			case 4:
+				System.out.print("Enter Student name: ");
+				String enrollStudent = sc.nextLine();
+				System.out.print("Enter course title: ");
+				String enrollCourse = sc.nextLine();
+				management.enrollStudentInCourse(enrollStudent,enrollCourse); // enroll student in course
+				break;
+				
+			case 5:
+				System.out.print("Enter Professor name: ");
+				String assignProfessor = sc.nextLine();
+				System.out.print("Enter course title: ");
+				String assignCourse = sc.nextLine();
+				management.assignCourseToProfessor(assignProfessor, assignCourse); // assign course to professor
+				break;
+				
+			case 6:
+				management.listStudents(); // list of students
+				break;
+				
+			case 7:
+				management.listProfessors(); // list of Professors
+				break;
+				
+			case 8:
+				management.listCourses();// list of courses
+				break;
+				
+			case 9:
+				System.out.println("Enter Student Name");
+				String displayStudent = sc.nextLine();
+				management.displayStudentCourses(displayStudent); // display courses for student
+				break;
+				
+			case 10: 
+				System.out.println("Enter professor name: ");
+				String displayProfessor = sc.nextLine();
+				management.displayProfessorCourses(displayProfessor); //display course for professor
+				break;
+				
+			case 11:
+				running=false; // exit the loop
+				System.out.println("Exiting...");
+				break;
+				
+				default:
+					System.out.println("Invalid choice. please enter a number betweeen 1 to 11");
+					break;
+				}			
+		}	
+	}
+}
